@@ -13,3 +13,8 @@
 .text-encabezados {
   font-size: 15px;
 }
+
+.warning-message {
+  color: red;
+  font-size: 12px;
+}
