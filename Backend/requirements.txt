@@ -8,3 +8,4 @@ numpy
 matplotlib
 opencv-python
 scikit-learn
+Werkzeug
