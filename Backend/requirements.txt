@@ -1,0 +1,10 @@
+Flask
+watchdog
+pymongo[srv]
+Flask-Cors
+Flask-PyMongo
+python-dotenv
+numpy
+matplotlib
+opencv-python
+scikit-learn
