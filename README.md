@@ -1,4 +1,4 @@
-# To install all dependencies just execute the _install-dependencies.py_ script with: 
+*To install all dependencies just execute the _install-dependencies.py_ script with:*
 - Windows: 
 ```python install-dependencies.py```
 - Linux and MacOS: 
