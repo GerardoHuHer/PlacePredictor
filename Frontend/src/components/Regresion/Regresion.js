@@ -70,7 +70,7 @@ export default function Regresion({ respuesta, setRuta }) {
           })}>
             <option value="">¿Dónde estás en este momento?</option>
             {lugares?.map(p => {
-              return <option key={p._id} value={p.name}>{p.name}</option>
+              return <option key={p._id} value={p.id}>{p.Leyenda}</option>
             })}
           </select>
 
@@ -87,19 +87,19 @@ export default function Regresion({ respuesta, setRuta }) {
           {respuesta?.map((res) => {
             return <div className="row">
               <div className="col">
-                <p>{res.name}</p>
+                <p>{res.Leyenda}</p>
               </div>
               <div className="col">
-                <p>{res.conectores ? "Sí hay conectores" : "No hay conectores"}</p>
+                <p>{res.Conectores ? "Sí hay conectores" : "No hay conectores"}</p>
               </div>
               <div className="col">
-                <p>{res.comida ? "Puedes comer" : "No puedes comer"}</p>
+                <p>{res.Comida ? "Puedes comer" : "No puedes comer"}</p>
               </div>
               <div className="col">
-                <p>{res.cantidad}</p>
+                <p>{res.Personas}</p>
               </div>
               <div className="col">
-                <button className="btn btn-primary" type="submit" onClick={() => {return setDestino(res.name)}}>¿Cómo llegar?</button>
+                <button className="btn btn-primary" type="submit" onClick={() => {return setDestino(res.id)}}>¿Cómo llegar?</button>
               </div>
             </div>
           })}

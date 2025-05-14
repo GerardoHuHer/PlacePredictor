@@ -17,16 +17,16 @@ def hello():
 @app.route("/post_filtros", methods=["POST"])
 def post_filtros():
     data = request.get_json()
-    cantidad: int = data["cantidad"]
-    comida = data["comida"]
-    conectores = data["conectores"]
-    query = {"cantidad": cantidad}
-    if comida != 2:
-        query["comida"] = comida
-    if conectores != 2: 
-        query["conectores"] = conectores
+    Personas: int = data["Personas"]
+    Comida = data["Comida"]
+    Conectores = data["Conectores"]
+    query = {"Personas": {"$lte": Personas}}
+    if Comida != 2:
+        query["Comida"] =   Comida
+    if Conectores != 2: 
+        query["Conectores"] = Conectores
     try: 
-        result = mongo.db.information.find(query)
+        result = mongo.db.vectors.find(query)
         response = json_util.dumps(result)
         return response
     except Exception as e:
@@ -86,7 +86,7 @@ def create_place():
 
 @app.route("/get_places", methods=["GET"])
 def get_places():
-    places = mongo.db.places.find()
+    places = mongo.db.vectors.find()
     response = json_util.dumps(places)
     return Response(response, mimetype="application/json") 
 

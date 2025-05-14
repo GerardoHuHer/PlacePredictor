@@ -51,9 +51,14 @@ export default function Filtros({setRespuesta}) {
 
   // Petición post para enviar la información a la base de datos
   const onSubmit = async (data) => {
+    const parsedData = {
+      Personas: parseInt(data.Personas),
+      Comida: data.Comida === "true" ? true : data.Comida === "false"?false:2,
+      Conectores: data.Conectores === "true" ? true : data.Conectores === "false"?false:2,
+    }
     try {
-      const response = await axios.post(getUrl() + "/post_filtros", data);
-      setRespuesta(response);
+      const response = await axios.post(getUrl() + "/post_filtros", parsedData);
+      setRespuesta(response.data);
     } catch (e) {
       console.log("Error al hacer la petición");
     }
@@ -69,7 +74,7 @@ export default function Filtros({setRespuesta}) {
         <form onSubmit={handleSubmit(onSubmit, onError)} >
           <div className="row filtros">
             <div className="col">
-              <select className="form-select select-filtros" {...register("cantidad", {
+              <select className="form-select select-filtros" {...register("Personas", {
                 required: {
                   value: true,
                   message: "Cantidad de personas requeridas."
@@ -85,7 +90,7 @@ export default function Filtros({setRespuesta}) {
               )}
             </div>
             <div className="col">
-              <select className="form-select select-filtros" {...register("conectores", {
+              <select className="form-select select-filtros" {...register("Conectores", {
                 required: {
                   value: true,
                   message: "Seleccione una opción por favor."
@@ -101,7 +106,7 @@ export default function Filtros({setRespuesta}) {
               )}
             </div>
             <div className="col">
-              <select className="form-select select-filtros" {...register("comida", {
+              <select className="form-select select-filtros" {...register("Comida", {
                 required: {
                   value: true,
                   message: "Seleccione una opción por favor."

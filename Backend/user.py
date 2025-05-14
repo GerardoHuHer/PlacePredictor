@@ -13,7 +13,7 @@ def create_user():
         hashed_password = generate_password_hash(password)
         user_data: dict = {
             "username": username, 
-            "password": hashed_password, 
+            "password": hashed_password,
             "email": email
         } 
         result = mongo.db.users.insert_one(user_data)
