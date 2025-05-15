@@ -9,3 +9,5 @@ matplotlib
 opencv-python
 scikit-learn
 Werkzeug
+networkx
+pandas
