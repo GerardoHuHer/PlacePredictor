@@ -4,7 +4,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # Conexión a la base de datos
-connection: str = "mongodb+srv://xayilgph:kvwiW6FmLWw9HCi@pilot.q5evx34.mongodb.net/PLACEPREDICTOR_DB?retryWrites=true&w=majority&appName=Pilot"
+# connection: str = "mongodb+srv://xayilgph:kvwiW6FmLWw9HCi@pilot.q5evx34.mongodb.net/PLACEPREDICTOR_DB?retryWrites=true&w=majority&appName=Pilot"
+connection: str = "mongodb://127.0.0.1:27017/placesdb"
 app.config["MONGO_URI"] = connection
 
 mongo = PyMongo(app)
@@ -17,5 +18,5 @@ try:
 except Exception as e:
     print(f"Error al conectar: {e}")
 
-# xayilgph
-# kvwiW6FmLWw9HCi
+# # xayilgph
+# # kvwiW6FmLWw9HCi
