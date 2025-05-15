@@ -4,3 +4,6 @@
 - Linux and MacOS: 
 ```python3 install-dependencies.py```
 ---
+
+Important Software to consider:
+- MongoDB Compass
