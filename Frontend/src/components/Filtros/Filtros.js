@@ -24,7 +24,7 @@ import getUrl from "../../GetUrl"
 
 
 
-export default function Filtros({setRespuesta}) {
+export default function Filtros({ setRespuesta }) {
 
   // Hook para hacer la petición con el hook useForm
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -51,14 +51,41 @@ export default function Filtros({setRespuesta}) {
 
   // Petición post para enviar la información a la base de datos
   const onSubmit = async (data) => {
-    const parsedData = {
-      Personas: parseInt(data.Personas),
-      Comida: data.Comida === "true" ? true : data.Comida === "false"?false:2,
-      Conectores: data.Conectores === "true" ? true : data.Conectores === "false"?false:2,
+    let com;
+    let con;
+    if (data.comida === "true") {
+      com = true;
+    } else {
+      if (data.comida === "false") {
+        com = false
+      } else {
+        com = 2
+      }
     }
+    if (data.conectores === "true") {
+      con = true;
+    } else {
+      if (data.conectores === "false") {
+        con = false
+      } else {
+        con = 2
+      }
+    }
+    const parsedData = {
+      personas: parseInt(data.personas),
+      comida: com,
+      conectores: con,
+    }
+    console.log("Data", parsedData);
     try {
       const response = await axios.post(getUrl() + "/post_filtros", parsedData);
-      setRespuesta(response.data);
+      console.log("response: ", response)
+      if (response.data.length > 0) {
+        setRespuesta(response.data);
+      } else {
+        alert("No se econtraron lugares con esas caracteristicas")
+      }
+
     } catch (e) {
       console.log("Error al hacer la petición");
     }
@@ -74,7 +101,7 @@ export default function Filtros({setRespuesta}) {
         <form onSubmit={handleSubmit(onSubmit, onError)} >
           <div className="row filtros">
             <div className="col">
-              <select className="form-select select-filtros" {...register("Personas", {
+              <select className="form-select select-filtros" {...register("personas", {
                 required: {
                   value: true,
                   message: "Cantidad de personas requeridas."
@@ -90,7 +117,7 @@ export default function Filtros({setRespuesta}) {
               )}
             </div>
             <div className="col">
-              <select className="form-select select-filtros" {...register("Conectores", {
+              <select className="form-select select-filtros" {...register("conectores", {
                 required: {
                   value: true,
                   message: "Seleccione una opción por favor."
@@ -106,7 +133,7 @@ export default function Filtros({setRespuesta}) {
               )}
             </div>
             <div className="col">
-              <select className="form-select select-filtros" {...register("Comida", {
+              <select className="form-select select-filtros" {...register("comida", {
                 required: {
                   value: true,
                   message: "Seleccione una opción por favor."
