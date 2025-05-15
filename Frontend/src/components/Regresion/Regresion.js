@@ -24,7 +24,7 @@ import 'primeflex/primeflex.css';
 export default function Regresion({ respuesta, setRuta }) {
   // Lugar al que quiero llegar
   const [destino, setDestino] = useState("");
-  
+
   // Hooks para almacenar los lugares
   const [lugares, setLugares] = useState([]);
 
@@ -33,9 +33,12 @@ export default function Regresion({ respuesta, setRuta }) {
 
   // Petición post para enviar la información a la base de datos
   const onSubmit = async (data) => {
+    data.destino = destino;
+    console.log("Data: ", data)
     try {
-      data.destino = destino;
-      const response = await axios.post(getUrl() + "/ruta_ideal", data);
+      const response = await axios.post(getUrl() + "/ruta_ideal", data, {headers: {
+        "Content-Type": "application/json"
+      }});
       setRuta(response)
       console.log("Response: ", response);
     } catch (e) {
@@ -46,7 +49,7 @@ export default function Regresion({ respuesta, setRuta }) {
   const onError = (e) => {
     console.log("onError");
   }
-  
+
 
   // Hook useEffect para hacer la petición al backend
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function Regresion({ respuesta, setRuta }) {
           })}>
             <option value="">¿Dónde estás en este momento?</option>
             {lugares?.map(p => {
-              return <option key={p._id} value={p.id}>{p.Leyenda}</option>
+              return <option key={p._id} value={p.id}>{p.name}</option>
             })}
           </select>
 
@@ -87,19 +90,19 @@ export default function Regresion({ respuesta, setRuta }) {
           {respuesta?.map((res) => {
             return <div className="row">
               <div className="col">
-                <p>{res.Leyenda}</p>
+                <p>{res.name}</p>
               </div>
               <div className="col">
-                <p>{res.Conectores ? "Sí hay conectores" : "No hay conectores"}</p>
+                <p>{res.conectores ? "Sí hay conectores" : "No hay conectores"}</p>
               </div>
               <div className="col">
-                <p>{res.Comida ? "Puedes comer" : "No puedes comer"}</p>
+                <p>{res.comida ? "Puedes comer" : "No puedes comer"}</p>
               </div>
               <div className="col">
-                <p>{res.Personas}</p>
+                <p>{res.cantidad}</p>
               </div>
               <div className="col">
-                <button className="btn btn-primary" type="submit" onClick={() => {return setDestino(res.id)}}>¿Cómo llegar?</button>
+                <button className="btn btn-primary" type="submit" onClick={() => { return setDestino(res.id) }}>¿Cómo llegar?</button>
               </div>
             </div>
           })}
