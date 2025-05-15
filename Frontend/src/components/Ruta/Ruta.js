@@ -11,9 +11,6 @@ export default function Ruta({ ruta }) {
     <div className="mt-3 mb-5">
       <Panel header="Ruta">
         {ruta === null ? <p>No se ha seleccionado una ruta</p> : ""}
-        {ruta?.map(r => {
-          return <div></div>
-        })}
       </Panel>
     </div>
   </>
