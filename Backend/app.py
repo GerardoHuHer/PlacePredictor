@@ -17,17 +17,20 @@ def hello():
 @app.route("/post_filtros", methods=["POST"])
 def post_filtros():
     data = request.get_json()
-    Personas: int = data["Personas"]
-    Comida = data["Comida"]
-    Conectores = data["Conectores"]
-    query = {"Personas": {"$lte": Personas}}
-    if Comida != 2:
-        query["Comida"] =   Comida
-    if Conectores != 2: 
-        query["Conectores"] = Conectores
+    personas = int(data["personas"])
+    comida = data["comida"]
+    conectores = data["conectores"]
+    query = {"cantidad": {"$gt": personas}, "zona": True}
+    if comida != 2:
+        query["comida"] = comida
+    if conectores != 2: 
+        query["conectores"] = conectores
     try: 
-        result = mongo.db.vectors.find(query)
+        print(query)
+        result = mongo.db.places.find(query)
         response = json_util.dumps(result)
+        if len(response) == 0:
+            return {"message": "No se encontraron lugares con esas caracteristicas", "status": -1}
         return response
     except Exception as e:
         response = json_util.dumps({"message": f"There are not a place with that characteristics, {e}" })
@@ -37,25 +40,19 @@ def post_filtros():
 def create_information(): 
     data = request.get_json()
     # Información que vamos a subir a la base de datos
-    name = data["name"] # Nombre del lugar
+    ocupado = data["ocupado"] # Nombre del lugar
     dia = data["dia"] # Día, (lunes, 0), (martes, 1) ...
     hora = data["hora"] # Hora 
-    conector = data["conector"] # bool si tiene conector
-    comida = data["comida"] # bool si puedes comer
-    cantidad = data["cantidad"] # Cantidad de personas que pueden estar
     lugar = data["id_lugar"] # ObjectId del lugar
     information_data: dict = {
-        "name": name,
+        "ocupado": ocupado,
         "dia": dia,
         "hora": hora,
-        "conector": conector,
-        "comida": comida,
-        "cantidad": cantidad,
         "lugar": lugar
     }
     try:
         result = mongo.db.information.insert_one(information_data)
-        response = {"message": f"{name} fue creado exitosamente"}
+        response = {"message": f"{lugar} fue creado exitosamente"}
         return response
     except: 
         not_found()
@@ -65,20 +62,24 @@ def create_information():
 def create_place():
     data = request.get_json()
     id: int = data["id"]
-    name = data["name"]
-    comida = data["comida"]
-    conectores = data["conectores"]
-    cantidad = data["cantidad"]
+    leyenda = data["Leyenda"]
+    # comida = data["Comida"] if data["Comida"] != None else False
+    comida = data.get("Comida", False)
+    conectores = data.get("Conectores", False)
+    cantidad = data.get("Personas", 0)
+    location = data["location"]
+    zona = data["Zona"]
     place_data = {
         "id": id,
-        "name": name,
+        "name": leyenda,
         "comida": comida,
         "conectores": conectores,
-        "cantidad": cantidad
+        "cantidad": cantidad,
+        "zona": zona
     }
     try:
         result = mongo.db.places.insert_one(place_data)
-        response = {"message": f"{name} fue creado exitosamente"}
+        response = {"message": f"{leyenda} fue creado exitosamente"}
         return response
     except: 
         not_found()
@@ -86,7 +87,8 @@ def create_place():
 
 @app.route("/get_places", methods=["GET"])
 def get_places():
-    places = mongo.db.vectors.find()
+    # places = mongo.db.places.find()
+    places = mongo.db.places.find({"zona": True})
     response = json_util.dumps(places)
     return Response(response, mimetype="application/json") 
 
@@ -96,13 +98,13 @@ def ruta_ideal():
     destino = data["destino"]
     origen = data["origen"]
     try:        
-        camino = dfs(inicio=origen, objetivo=destino)
+        camino = []
+        # camino = dfs(inicio=origen, objetivo=destino)
+        camino = dfs(inicio="Z9", objetivo="Z1")
         if camino:
-            for cam in camino:
-                print(' -> '.join(cam))
-            return ""
+            return {"message": "Camino encontrado con exito", "path": camino}
         else:
-            return ""
+            return {"message": "No se encontro un camino", "path": []}
     except Exception as e: 
         return {"message": f"There was an error looking for paths"}
 
