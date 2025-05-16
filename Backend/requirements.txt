@@ -11,3 +11,4 @@ scikit-learn
 Werkzeug
 networkx
 pandas
+tensorflow
