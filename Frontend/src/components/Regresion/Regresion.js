@@ -23,7 +23,7 @@ import 'primeflex/primeflex.css';
 
 export default function Regresion({ respuesta, setRuta }) {
   // Lugar al que quiero llegar
-  const [destino, setDestino] = useState("");
+  const [destino, setDestino] = useState(" ");
 
   // Hooks para almacenar los lugares
   const [lugares, setLugares] = useState([]);
@@ -34,15 +34,21 @@ export default function Regresion({ respuesta, setRuta }) {
   // Petición post para enviar la información a la base de datos
   const onSubmit = async (data) => {
     data.destino = destino;
-    console.log("Data: ", data)
-    try {
-      const response = await axios.post(getUrl() + "/ruta_ideal", data, {headers: {
-        "Content-Type": "application/json"
-      }});
-      setRuta(response)
-      console.log("Response: ", response);
-    } catch (e) {
-      console.log("Error al hacer la petición");
+    if (destino !== " ") {
+      console.log("Data: ", data)
+      try {
+        const response = await axios.post(getUrl() + "/ruta_ideal", data, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        setRuta(response)
+        console.log("Response: ", response);
+      } catch (e) {
+        console.log("Error al hacer la petición");
+      }
+    } else {
+      alert("No se ha ingresado un destino")
     }
   }
 
@@ -65,17 +71,24 @@ export default function Regresion({ respuesta, setRuta }) {
     <div className="mt-3">
       <Panel header="Opciones">
         <form onSubmit={handleSubmit(onSubmit, onError)}>
-          <select className="form-select" {...register("origen", {
-            required: {
-              value: true,
-              message: "Es necesario seleccionar un lugar de origen."
-            }
-          })}>
-            <option value="">¿Dónde estás en este momento?</option>
-            {lugares?.map(p => {
-              return <option key={p._id} value={p.id}>{p.name}</option>
-            })}
-          </select>
+          <div className="row">
+            <div className="col">
+              <select className="form-select" {...register("origen", {
+                required: {
+                  value: true,
+                  message: "Es necesario seleccionar un lugar de origen."
+                }
+              })}>
+                <option value="">¿Dónde estás en este momento?</option>
+                {lugares?.map(p => {
+                  return <option key={p._id} value={p.id}>{p.name}</option>
+                })}
+              </select>
+            </div>
+            <div className="col">
+              <button className="btn btn-primary w-5" type="submit">Buscar</button>
+            </div>
+          </div>
 
           {errors?.origen?.type === 'required' && (
             <p className="warning-message">{errors.origen.message}</p>
@@ -102,7 +115,7 @@ export default function Regresion({ respuesta, setRuta }) {
                 <p>{res.cantidad}</p>
               </div>
               <div className="col">
-                <button className="btn btn-primary" type="submit" onClick={() => { return setDestino(res.id) }}>¿Cómo llegar?</button>
+                <button className="btn btn-primary" onClick={() => { return setDestino(res.id) }}>¿Cómo llegar?</button>
               </div>
             </div>
           })}
