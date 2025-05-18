@@ -98,6 +98,7 @@ export default function Regresion({ respuesta, setRuta }) {
             <div className="col">Conectores</div>
             <div className="col">Comida</div>
             <div className="col">Cantidad</div>
+            <div className="col">Ocupado</div>
             <div className="col">Botón</div>
           </div>
           {respuesta?.map((res) => {
@@ -113,6 +114,9 @@ export default function Regresion({ respuesta, setRuta }) {
               </div>
               <div className="col">
                 <p>{res.cantidad}</p>
+              </div>
+              <div className="col">
+                <p>{res.ocupado ? "Libre" : "Ocupado"} </p>
               </div>
               <div className="col">
                 <button className="btn btn-primary" onClick={() => { return setDestino(res.id) }}>¿Cómo llegar?</button>
