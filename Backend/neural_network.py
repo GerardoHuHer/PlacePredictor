@@ -48,7 +48,8 @@ def entrenar_modelo():
         Dense(1, activation='sigmoid')
     ])
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-    model.fit(X_train, y_train, epochs=500, batch_size=9, verbose=1)
+    # model.fit(X_train, y_train, epochs=500, batch_size=9, verbose=1)
+    model.fit(X_train, y_train, epochs=1000, batch_size=9, verbose=1)
 
     print("Modelo entrenado")
 
