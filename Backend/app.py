@@ -41,15 +41,15 @@ def post_filtros():
         if not places:
             return {"message": "No se encontraron lugares con esas caracteristicas", "status": -1}
 
-        information = []
         ahora = datetime.now()
         hora_actual = ahora.strftime("%H:%M")
         dia_actual = ahora.isoweekday() - 1
         for place in places:
             value = nn.predecir_ocupacion(dia_actual, hora_actual ,str(place["_id"]))
-            place["ocupado"] = value
+            place["ocupado"] = bool(value)
         return json_util.dumps(places)
     except Exception as e:
+        print(f"Error: {e} ")
         response = json_util.dumps({"message": f"There are not a place with that characteristics, {e}" })
         return response, 500
 
@@ -170,4 +170,6 @@ def get_day(day: str) -> int:
 
 if __name__ == "__main__":  
     entrenar_modelo()
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    # app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run( host="0.0.0.0", port=5000)
+    

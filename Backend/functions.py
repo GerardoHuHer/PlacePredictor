@@ -1,7 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-grafo = {
+
+grafo_dirigido = {
     "D1": ["EN"],
     "D2": ["P3"],
     "D3": ["P10"],
@@ -69,7 +70,7 @@ grafo = {
     "P45": ["P44", "Z10"],
     "P46": ["P45"],
     "Z11": ["P46"],
-    "P47": ["P46", "P",],
+    "P47": ["P46", "P"],
     "Z12": ["P47"],
     "P48": ["P47", "Z13"],
     "P49": ["P48", "Z14"],
@@ -92,8 +93,7 @@ grafo = {
     "EA": ["P58"]
 }
 
-
-def dfs(grafo=grafo, inicio="", objetivo="", visitados=None, camino=None, caminos_encontrados=None):
+def dfs(grafo=grafo_dirigido, inicio="", objetivo="", visitados=None, camino=None, caminos_encontrados=None):
     if visitados is None:
         visitados = set()
     if camino is None:
